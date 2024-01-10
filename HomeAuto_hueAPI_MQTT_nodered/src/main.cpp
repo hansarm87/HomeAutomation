@@ -28,6 +28,11 @@ const char* mqttPassword = myCredentials::mqttPassword;
 const int relayPin1 = D1;
 const int relayPin2 = D2;
 
+// variables for timer functionality
+
+boolean StartTimer = false;
+
+
 // Object used for handling the WiFi connection
 WiFiClient wifiClient; 
 
@@ -143,6 +148,12 @@ void setup() {
 void loop() {
 
 mqttClient.loop();
+
+if (isMotionDetected()) {
+  Serial.println("Motion detected!");
+  digitalWrite(relayPin1, LOW);
+  StartTimer = true;
+}
 
 }
 
