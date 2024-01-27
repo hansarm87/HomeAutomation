@@ -33,7 +33,7 @@ const int relayPin2 = D2;
 boolean StartTimer = false;
 
 
-// Object used for handling the WiFi connection
+// Object used for handling the WiFi connection in regards to MQTT
 WiFiClient wifiClient; 
 
 // The mqtt object requires a WiFiClient instance (wifiClient) to establish a connection to an MQTT broker
