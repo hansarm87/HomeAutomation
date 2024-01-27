@@ -6,6 +6,8 @@
 const int relayPin1 = D5;
 const int relayPin2 = D6;
 
+const int pirPin = D1;
+
 // network and WiFi configuration
 const char* ssid = myCredentials::ssid;
 const char* password = myCredentials::password;
@@ -59,7 +61,7 @@ void callBack(char* topic, byte* message, unsigned int length) {
     messageTemp += (char)message[i];
   }
   Serial.println();
-
+//********** subscribing on hallway lamp *******************
   if (String(topic) == "ESPxxxx/relay1/hallwayLamp") {
     Serial.print("Changing output1 on Relay1 to: ");
     if (messageTemp == "100%_on") {
@@ -90,16 +92,16 @@ void callBack(char* topic, byte* message, unsigned int length) {
     }
     
   }
-
+//********** subscribing on livingroom lamp *******************
   if (String(topic) == "ESPxxxx/relay1/livingroomLamp") {
     Serial.print("Changing output2 on relay1 to: ");
     if (messageTemp == "on") {
       Serial.println("on");
-      digitalWrite(relayPin2, HIGH);
+      digitalWrite(relayPin2, LOW);
     }
     else if (messageTemp == "off") {
     Serial.println("off");
-    digitalWrite(relayPin2, LOW);
+    digitalWrite(relayPin2, HIGH);
   }
   }
 }
@@ -109,6 +111,8 @@ void setup() {
 
   pinMode(relayPin1, OUTPUT);
   pinMode(relayPin2, OUTPUT);
+
+  pinMode(pirPin, INPUT);
 
   //connect to wifi
   WiFi.config(staticIP, gateway, subnet);
