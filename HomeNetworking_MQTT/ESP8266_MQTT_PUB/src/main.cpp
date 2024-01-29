@@ -39,7 +39,7 @@ int PB2Old = HIGH;
 int PB2New;
 int PB2State = 0;
 
-// variables for Pir and timer (ISR) function
+/* variables for Pir and timer (ISR) function
 const int pirPin = D1;
 boolean startTimer;
 
@@ -50,7 +50,7 @@ unsigned long previousTime = 0;
 volatile unsigned long counter = 0;
 unsigned long counterCurrentTime;
 unsigned long counterPreviousTime = 0;
-
+*/
 //*********** MQTT **************
 
 void reConnect() {
@@ -74,21 +74,21 @@ void reConnect() {
 
 //*********** ISR ***************
 
-IRAM_ATTR void detectMovement() {
+/*IRAM_ATTR void detectMovement() {
   Serial.println("Motion detected");
   previousTime = millis();
   startTimer = true;
   counter = 0;
 }
-
+*/
 void setup() {
   Serial.begin(115200);
 
   pinMode(PB1, INPUT);
   pinMode(PB2, INPUT);
 
-  pinMode(pirPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(pirPin), detectMovement, RISING);
+  //pinMode(pirPin, INPUT_PULLUP);
+  //attachInterrupt(digitalPinToInterrupt(pirPin), detectMovement, RISING);
 
   WiFi.config(staticIP, gateway, subnet);
   WiFi.begin(ssid, password);
@@ -149,7 +149,7 @@ void loop() {
   }
   PB2Old = PB2New;
   
-//******************** timer function for deactivating hallwayLamp **********************
+/******************** timer function for deactivating hallwayLamp **********************
 currentTime = millis();
 if ((currentTime - previousTime > (50 * 1000)) && startTimer) {
   previousTime = currentTime;
@@ -167,7 +167,7 @@ if ((counterCurrentTime - counterPreviousTime > 1000) && startTimer) {
 if (startTimer==true) {
   mqttClient.publish(mqttTopic1, "100%_on");
 }
-
+*/
 
 
 

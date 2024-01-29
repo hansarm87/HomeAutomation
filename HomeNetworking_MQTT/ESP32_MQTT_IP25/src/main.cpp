@@ -1,30 +1,18 @@
 #include <Arduino.h>
 #include <myCredentials.h>
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <PubSubClient.h>
 
-const int relayPin1 = D5;
-const int relayPin2 = D6;
+const int relayPin1 = 7;
+const int relayPin2 = 8;
 
-
-// variables for Pir and timer (ISR) function
-const int pirPin = D2;
-boolean startTimer;
-
-
-unsigned long currentTime;
-unsigned long previousTime = 0;
-
-volatile unsigned long counter = 0;
-unsigned long counterCurrentTime;
-unsigned long counterPreviousTime = 0;
-
+const int pirPin = 6;
 
 // network and WiFi configuration
 const char* ssid = myCredentials::ssid;
 const char* password = myCredentials::password;
 
-IPAddress staticIP(192,168,0,23);
+IPAddress staticIP(192,168,0,25);
 IPAddress gateway(192,168,0,1);
 IPAddress subnet(255,255,255,0);
 
@@ -40,6 +28,16 @@ const char* topic2 = "ESPxxxx/relay1/livingroomLamp";
 
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
+
+boolean startTimer;
+
+
+unsigned long currentTime;
+unsigned long previousTime = 0;
+
+volatile unsigned long counter = 0;
+unsigned long counterCurrentTime;
+unsigned long counterPreviousTime = 0;
 
 void reConnect() {
   while (!mqttClient.connected()) {
@@ -73,6 +71,7 @@ void callBack(char* topic, byte* message, unsigned int length) {
     messageTemp += (char)message[i];
   }
   Serial.println();
+
 //********** subscribing on hallway lamp *******************
   if (String(topic) == "ESPxxxx/relay1/hallwayLamp") {
     Serial.print("Changing output1 on Relay1 to: ");
@@ -120,13 +119,13 @@ void callBack(char* topic, byte* message, unsigned int length) {
 
 //*********** ISR ***************
 
-IRAM_ATTR void detectMovement() {
+/*IRAM_ATTR void detectMovement() {
   Serial.println("Motion detected");
   previousTime = millis();
   startTimer = true;
   counter = 0;
 }
-
+*/
 void setup() {
   Serial.begin(115200);
 
@@ -134,7 +133,7 @@ void setup() {
   pinMode(relayPin2, OUTPUT);
 
   pinMode(pirPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(pirPin), detectMovement, RISING);
+  //attachInterrupt(digitalPinToInterrupt(pirPin), detectMovement, RISING);
 
   //connect to wifi
   WiFi.config(staticIP, gateway, subnet);
@@ -161,10 +160,11 @@ void loop() {
 
   mqttClient.loop();
 
-  //******************** timer function for deactivating hallwayLamp **********************
-currentTime = millis();
+
+  currentTime = millis();
 if ((currentTime - previousTime > (50 * 1000)) && startTimer) {
   previousTime = currentTime;
+  //mqttClient.publish(mqttTopic1, "off");
   digitalWrite(relayPin1,HIGH);
   Serial.println("Motion stopped");
   startTimer = false;
@@ -177,7 +177,10 @@ if ((counterCurrentTime - counterPreviousTime > 1000) && startTimer) {
     counterPreviousTime = counterCurrentTime;
 }
 if (startTimer==true) {
-  digitalWrite(relayPin1,LOW);
+  //mqttClient.publish(mqttTopic1, "100%_on");
+  digitalWrite(relayPin1, LOW);
 }
+
+delay(100);
 }
 
