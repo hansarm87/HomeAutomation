@@ -5,6 +5,10 @@
 
 const int relayPin1 = 7;
 const int relayPin2 = 8;
+const int relayPin3 = 9;
+const int relayPin4 = 10;
+const int relayPin5 = 11;
+const int relayPin6 = 12;
 
 const int pirPin = 6;
 
@@ -76,9 +80,9 @@ void callBack(char* topic, byte* message, unsigned int length) {
   }
   Serial.println();
 
-//********** subscribing on hallway lamp *******************
-  if (String(topic) == "ESPxxxx/relay1/hallwayLamp") {
-    Serial.print("Changing output1 on Relay1 to: ");
+//********** subscribing on out1 *******************
+  if (String(topic) == "ESPxx25/relay3/out1") {
+    Serial.print("Changing output1 on Relay to: ");
     if (messageTemp == "100%_on") {
       Serial.println("100% on");
       digitalWrite(relayPin1, LOW);
@@ -108,8 +112,8 @@ void callBack(char* topic, byte* message, unsigned int length) {
     
   }
 //********** subscribing on livingroom lamp *******************
-  if (String(topic) == "ESPxxxx/relay1/livingroomLamp") {
-    Serial.print("Changing output2 on relay1 to: ");
+  if (String(topic) == "ESPxx25/relay3/out2") {
+    Serial.print("Changing output2 on relay to: ");
     if (messageTemp == "on") {
       Serial.println("on");
       digitalWrite(relayPin2, LOW);
