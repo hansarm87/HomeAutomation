@@ -110,24 +110,14 @@ void callBack(char* topic, byte* message, unsigned int length) {
     int timer = 0;
 
     if (messageTemp == "down") {
-      //Serial.println("Changing output1 on Relay2 to: 100% on");
-      while (timer < 20) {
-        goDownFor1Sec();
-        timer += 1;
-        Serial.println(timer);
+      goDown();
       }
-    Serial.println("Roller blind are down"); 
-      
-    }
     else if (messageTemp == "up") {
-      while (timer < 20) {
-        goUpFor1Sec();
-        timer += 1;
-        Serial.println(timer);
-      }
-    Serial.println("Roller blind are up");
+     goUp();
     }  
-
+    else if (messageTemp == "stop") {
+     stop();
+    }  
   }
 }
 

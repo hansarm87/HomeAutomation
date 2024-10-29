@@ -24,7 +24,7 @@ unsigned long counterPreviousTime = 0;
 const char* ssid = myCredentials::ssid;
 const char* password = myCredentials::password;
 
-IPAddress staticIP(192,168,0,23);
+IPAddress staticIP(192,168,0,11);
 IPAddress gateway(192,168,0,1);
 IPAddress subnet(255,255,255,0);
 

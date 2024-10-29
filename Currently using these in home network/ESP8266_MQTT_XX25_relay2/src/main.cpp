@@ -8,7 +8,7 @@
 const char* SSID = myCredentials::ssid;
 const char* password = myCredentials::password;
 
-IPAddress staticIP(192,168,0,25);
+IPAddress staticIP(192,168,0,11);
 IPAddress gateway(0,0,0,0);
 IPAddress subnet(255,255,255,0);
 
